@@ -36,64 +36,64 @@ function ContactForm() {
   return regex.test(email);
 }
 
-  async function handleSubmit(e) {
+async function handleSubmit(e) {
 
-    e.preventDefault();
+  e.preventDefault();
 
-    if(!validateEmail(formData.email)){
-       setEmailError("Please enter a valid email");
+  if(!validateEmail(formData.email)){
 
-  return;
-}
+    setEmailError("Please enter a valid email");
 
-setEmailError("");
-
-    try {
-      setLoading(true);
-
-      const response = await fetch(
-        "https://shecan-backend-ezzi.onrender.com/api/contact",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(formData)
-        }
-      );
-
-      const data = await response.json();
-
-      if(!data.success){
-
-        toast.error(data.message);
-
-        setLoading(false);
-
-        return;
-      }
-
-      if(data.success){
-
-        toast.success("Email Sent Successfully!");
-
-        setFormData({
-          name: "",
-          email: "",
-          message: ""
-        });
-
-        setLoading(false);
-      }
-
-    } catch(error){
-
-      console.log(error);
-
-      toast.error("Failed to send email");
-      setLoading(false);
-    }
+    return;
   }
+
+  setEmailError("");
+
+  try {
+
+    setLoading(true);
+
+    const response = await fetch(
+      "https://shecan-backend-ezzi.onrender.com/api/contact",
+      {
+        method:"POST",
+
+        headers:{
+          "Content-Type":"application/json"
+        },
+
+        body:JSON.stringify(formData)
+      }
+    );
+
+    const data = await response.json();
+
+    if(data.success){
+
+      toast.success("Email Sent Successfully!");
+
+      setFormData({
+        name:"",
+        email:"",
+        message:""
+      });
+
+    }else{
+
+      toast.error(data.message || "Failed to send email");
+    }
+
+  } catch(error){
+
+    console.log(error);
+
+    toast.error("Server is waking up. Please try again.");
+
+  } finally{
+
+    setLoading(false);
+  }
+}
 
   return (
       <motion.div
