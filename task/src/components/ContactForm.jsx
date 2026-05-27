@@ -52,7 +52,7 @@ setEmailError("");
       setLoading(true);
 
       const response = await fetch(
-        "http://localhost:5000/api/contact",
+        "https://shecan-backend-ezzi.onrender.com/api/contact",
         {
           method: "POST",
           headers: {
